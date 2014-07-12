@@ -30,6 +30,3 @@ serve: build
 .PHONY: data build serve
 
 .DELETE_ON_ERROR:
-
-data/map.osm:
-	wget -O $@ "http://www.openstreetmap.org/api/0.6/map?bbox=144.94258403778073,-37.82178544741225,144.97863292694092,-37.808529446909795"
