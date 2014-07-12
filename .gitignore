@@ -21,7 +21,7 @@ db/*.sqlite3
 /db/*.sqlite3-journal
 /log/*
 /tmp/*
-
+output
 # various artifacts
 generated.xml
 lh_difference.csv
