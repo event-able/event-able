@@ -26,6 +26,9 @@ def copy_statics():
     if path.isdir('output/static'):
         shutil.rmtree('output/static')
 
+    if not path.isdir(OUTPUT_DIR):
+        os.mkdir(OUTPUT_DIR)
+
     sh.cp('-r', 'static', 'output/static')
 
 
