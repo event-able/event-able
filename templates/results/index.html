@@ -1,0 +1,63 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<h2>Results</h2>
+<div class="row results">
+  <div class="large-12 columns ">
+    <div class="row">
+      <div class="large-9 columns">
+        <h3> Search Results for ___</h3>
+      </div>
+      <div class=" large-3 columns">
+        <select name="sortOptions">
+          <option value="sortby">Sort By</option>
+          <option value="location">Location</option>
+          <option value="category">Category</option>
+          <option value="price">Price</option>
+          <option value="date">Date</option>
+          <option value="access">Access</option>
+        </select>
+      </div>
+    </div>
+    <div class="search-results">
+      <div class="row ">
+        <div class="large-2 columns">
+          <a href="#"><img src="#" alt="event" class="thumbnail"></a>
+        </div>
+        <div class="large-10 columns">
+          <div class="row">
+            <div class=" large-9 columns">
+              <h5><a href="#">This Event!</a></h5>
+              <p><a href="#"> Info</a> | <a href="#">RSPV</a></p>
+            </div>
+            <div class=" large-3 columns">
+              <a href="#"  class="button  expand medium"><span>Add to Calender</span> </a>
+              <a href="#"  class="button  expand medium"><span>Accessible Information</span></a>
+            </div>
+            <div class="row">
+              <div class=" large-12 columns">
+                <ul class="large-block-grid-2">
+                  <li>
+                    <ul>
+                      <li><strong>Where: </strong>Melbourne Event Place</li>
+                      <li><strong>What:</strong>Community</li>
+                      <li><strong>How much:</strong> Free</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <ul>
+                      <li><strong>When:</strong>Today</li>
+                      <li><strong>Access:</strong>Not sure</li>
+
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr>
+      </div>
+    </div>
+</div>
+{% endblock %}

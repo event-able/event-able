@@ -6,6 +6,10 @@ h1, h2 {
 	color: #FFF;
 }
 
+h3 {
+	color:#F7F30A;
+}
+
 label {
 	color: #EEE;
 }
@@ -13,4 +17,9 @@ label {
 .button {
 	background-color: #F7F30A;
 	color: #333;
+}
+
+.results {
+	background-color: rgba(255,255,255,.7);
+	padding: 1em;
 }
