@@ -6,7 +6,10 @@ help:
 	@echo '  make env     install sandboxed python dependencies'
 	@echo '  make serve   run a local development server'
 	@echo '  make watch   watch and rebuild on any changes'
+	@echo '  make deploy  deploy current build to S3'
 	@echo
+
+DEST_BUCKET = s3://eventable.in/
 
 data: \
 	data/events_rss.xml \
@@ -39,6 +42,9 @@ watch: env
 
 serve: build
 	cd output; python -m SimpleHTTPServer
+
+deploy: build
+	env/bin/aws s3 sync --acl=public-read --exclude='*/.*' --delete output/ $(DEST_BUCKET)
 
 .PHONY: data build serve
 

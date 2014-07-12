@@ -78,18 +78,33 @@ class Event(object):
         return d
 
 
-@ch.attributes(['address', 'area', 'suburb', 'city', 'state', 'postcode'])
+@ch.attributes(['name', 'address', 'latitude', 'longitude', 'city', 'state',
+                'postcode'])
 class Venue(object):
-    @staticmethod
-    def parse(node):
+    @classmethod
+    def parse(cls, node):
+        address, latitude, longitude = cls.parse_address(
+            node.find('address'),
+        )
         return Venue(
-            address=[l.text for l in node.findall('address')],
-            area=node.find('area').text,
-            suburb=node.find('suburb').text,
+            name=node.attrib['name'],
+            address=address,
+            latitude=latitude,
+            longitude=longitude,
             city=node.find('city').text,
             state=node.find('state').text,
             postcode=node.find('postcode').text,
         )
+
+    @staticmethod
+    def parse_address(node):
+        lines = [node.find('address1').text,
+                 node.find('address2').text,
+                 node.find('address3').text]
+        lines = filter(None, lines)
+        lat = node.find('latitude').text
+        lon = node.find('longitude').text
+        return lines, lat, lon
 
     def to_dict(self):
         return self.__dict__.copy()
