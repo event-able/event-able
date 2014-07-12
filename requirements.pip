@@ -12,6 +12,7 @@ jmespath==0.4.1
 pathtools==0.1.2
 pyasn1==0.1.7
 python-dateutil==2.2
+requests==2.3.0
 rsa==3.1.2
 s3cmd==1.0.1
 sh==1.09

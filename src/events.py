@@ -18,9 +18,13 @@ from xml.etree import ElementTree
 import characteristic as ch
 
 
-def build_event_json(input_file, output_dir):
+def build_event_json(input_file, wheelchair_file, output_dir):
     events = parse_events(input_file)
     events = _prune_historical_events(events)
+
+    venues = _load_venue_accessibility(wheelchair_file)
+    _add_venue_accessibility(venues, events)
+
     melbourne, regional = _split_by_region(events)
 
     _save_events(melbourne, output_dir + '/melbourne.json')
@@ -43,6 +47,24 @@ def _split_by_region(events):
     return melbourne, regional
 
 
+def _load_venue_accessibility(wheelchair_file):
+    return json.load(open(wheelchair_file))
+
+
+def _add_venue_accessibility(venues, events):
+    by_name = {v['name']: v for v in venues}
+
+    for e in events:
+        if e.venue.name in by_name:
+            v = by_name[e.venue.name]
+            record = {'wheelmap': v['link'],
+                      'wheelchair': v['wheelchair']}
+        else:
+            record = {'wheelchair': 'unknown'}
+
+        e.set_accessibility(record)
+
+
 def _save_events(events, filename):
     dicts = [e.to_dict() for e in events]
     with open(filename, 'w') as ostream:
@@ -51,7 +73,8 @@ def _save_events(events, filename):
 
 
 @ch.attributes(['guid', 'link', 'category', 'title', 'description',
-                'region', 'venue', 'isfree', 'date', 'tags'])
+                'region', 'venue', 'isfree', 'date', 'tags',
+                'accessibility'])
 class Event(object):
     @staticmethod
     def parse(node):
@@ -66,7 +89,11 @@ class Event(object):
             isfree=node.find('{myEvents}freeEntry').text,
             date=parse_date(node.find('{myEvents}eventDate').text),
             tags=[t.text for t in node.findall('{myEvents}tags')],
+            accessibility=None,
         )
+
+    def set_accessibility(self, v):
+        self.accessibility = v
 
     def is_historical(self):
         return self.date < datetime.date.today()
@@ -87,7 +114,7 @@ class Venue(object):
             node.find('address'),
         )
         return Venue(
-            name=node.attrib['name'],
+            name=node.attrib['name'].strip(),
             address=address,
             latitude=latitude,
             longitude=longitude,
@@ -131,7 +158,7 @@ def parse_events(input_file):
 
 def _create_option_parser():
     usage = \
-"""%prog [options] input_file.xml output_file.json
+"""%prog [options] input_file.xml wheelmap.json output_file.json
 
 Turn the event feed into JSON."""  # nopep8
 
@@ -144,7 +171,7 @@ def main(argv):
     parser = _create_option_parser()
     (options, args) = parser.parse_args(argv)
 
-    if len(args) != 2:
+    if len(args) != 3:
         parser.print_help()
         sys.exit(1)
 
