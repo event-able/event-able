@@ -25,7 +25,7 @@ label {
 .results {
 	background-color: rgba(255,255,255,.7);
 	padding: 1em;
-	height: 75%;
+	height: 70%;
 	overflow: auto;
 }
 
@@ -38,4 +38,8 @@ footer {
 
 .results-container {
 	display: none;
+}
+
+#back_to_search {
+	margin: 0.5em 0;
 }
