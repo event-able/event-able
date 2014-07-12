@@ -9,8 +9,13 @@ h1, h2 {
 	color: #FFF;
 }
 
-h3, a {
-	color:#F7F30A;
+h3 {
+	color:#007095;
+}
+
+a {
+	color: #F7F30A;
+	text-decoration: underline;
 }
 
 label {
@@ -25,7 +30,7 @@ label {
 .results {
 	background-color: rgba(255,255,255,.7);
 	padding: 1em;
-	height: 70%;
+	height: 60%;
 	overflow: auto;
 }
 
