@@ -53,7 +53,7 @@ serve: build
 	cd output; python -m SimpleHTTPServer
 
 .s3cfg: env
-	env/bin/s3cmd --configure -c .s3cfg
+	test -f .s3cfg || env/bin/s3cmd --configure -c .s3cfg
 
 deploy: build .s3cfg
 	env/bin/s3cmd sync -c .s3cfg --acl-public --recursive --delete-removed --exclude='*/.*' output/ $(DEST_BUCKET)
