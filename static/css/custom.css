@@ -1,5 +1,7 @@
 body {
 	background-image: url('../images/melbourne-cityscapes.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 h1, h2 {
