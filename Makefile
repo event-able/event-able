@@ -5,6 +5,7 @@ help:
 	@echo '  make build   make html output'
 	@echo '  make env     install sandboxed python dependencies'
 	@echo '  make serve   run a local development server'
+	@echo '  make watch   watch and rebuild on any changes'
 	@echo
 
 data: \
@@ -29,6 +30,9 @@ env: requirements.pip
 
 build: env src/build.py static/data/melbourne.json
 	env/bin/python src/build.py
+
+watch: env
+	env/bin/watchmedo shell-command -c "make build" -R static templates
 
 serve: build
 	cd output; python -m SimpleHTTPServer

@@ -7,7 +7,6 @@
 from __future__ import absolute_import, print_function, division
 
 import os
-import shutil
 from os import path
 
 import sh
@@ -24,7 +23,7 @@ def build():
 
 def copy_statics():
     if path.isdir('output/static'):
-        shutil.rmtree('output/static')
+        sh.rm('-rf', 'output/static')
 
     if not path.isdir(OUTPUT_DIR):
         os.mkdir(OUTPUT_DIR)
