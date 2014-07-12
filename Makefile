@@ -12,7 +12,6 @@ data: \
 	data/events_rss.xml \
 	data/accessibility.json \
 	static/data/melbourne.json \
-	data/map.osm \
 
 data/events_rss.xml:
 	wget -O $@ http://www.eventsvictoria.com/distributionservice/rss.xml
