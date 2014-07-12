@@ -18,8 +18,8 @@
         <ul class="large-block-grid-2">
           <li>
             <ul>
-              <li><strong>Where: </strong><%- venue.name %></li>
-              <li><strong>When:</strong><%- date %></li>
+              <li><strong>Where:</strong> <%- venue.name %></li>
+              <li><strong>When:</strong> <%- date %></li>
               <li><strong>Access:</strong>
                 <%= accessibility.wheelchair === "unknown" ? "No information" :
                    (accessibility.wheelchair === "yes" ? "Very accessible" : "Just a bit accessible")%></li>
@@ -28,7 +28,7 @@
           </li>
           <li>
             <ul>
-              <li><strong>What:</strong><%- description %></li>
+              <li><strong>What:</strong> <%- description %></li>
             </ul>
           </li>
         </ul>
