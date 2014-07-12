@@ -1,15 +1,17 @@
 <div class="large-2 columns">
-  <a href="#"><img src="/static/images/windows_live_events_logo.png" alt="event_logo" class="thumbnail"></a>
+  <a href="<%- link %>"><img src="/static/images/windows_live_events_logo.png" alt="<%= title %>_event_logo" class="thumbnail"></a>
 </div>
 <div class="large-10 columns" style="border-bottom: #F7F30A solid 1px; margin-top: 0.5em;">
   <div class="row">
     <div class=" large-9 columns">
-      <h3><a href="<%= link %>"><%= title %></a></h5>
-      <p><a todo="true" href="#"> Info</a> | <a todo="true" href="#">RSPV</a></p>
+      <h3><%= title %></h5>
+      <p><a href="<%- link %>"> Info</a><!-- | <a todo="true" href="#">RSPV</a></p>-->
     </div>
     <div class=" large-3 columns">
-      <a todo="true" href="#" class="button expand medium"><span>Add to Calender</span> </a>
-      <a todo="true" href="#" class="button expand medium"><span>Accessible Information</span></a>
+      <!--<a todo="true" href="#" class="button expand medium"><span>Add to Calender</span> </a>-->
+     <a
+     <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
+     href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Accessible Information</span></a>
     </div>
     <div class="row">
       <div class=" large-12 columns">
@@ -17,9 +19,11 @@
           <li>
             <ul>
               <li><strong>Where: </strong><%- venue.name %></li>
-              <li><strong>When:</strong>Today</li>
-              <li><strong>Access:</strong><%= accessibility.wheelchair %></li>
-              <li><strong>Free:</strong> <%= isfree %></li>
+              <li><strong>When:</strong><%- date %></li>
+              <li><strong>Access:</strong>
+                <%= accessibility.wheelchair === "unknown" ? "No information" :
+                   (accessibility.wheelchair === "yes" ? "Very accessible" : "Just a bit accessible")%></li>
+              <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
             </ul>
           </li>
           <li>
