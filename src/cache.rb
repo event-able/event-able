@@ -6,22 +6,20 @@ class ResponseCache
     @db = SQLite3::Database.new path
     db.execute <<-SQL rescue nil
       create table cache (
-        name text PRIMARY KEY,
-        url text NOT NULL,
-        response text NOT NULL
+        key text PRIMARY KEY,
+        value text NOT NULL
       );
     SQL
   end
 
-  def fetch(name, url)
-    name = name.downcase.strip
-    db.execute("select response from cache where name = ?", name) do |row|
+  def fetch(key)
+    name = key.downcase.strip
+    db.execute("select value from cache where key = ?", key) do |row|
       return row.first
     end
-    sleep 1 # Don't hammer them!
-    resp = RestClient.get url
-    db.execute "insert into cache values ( ?, ?, ? )", [name, url, resp]
-    resp
+    val = yield
+    db.execute "insert into cache values ( ?, ? )", [key, val]
+    val
   end
 
   private

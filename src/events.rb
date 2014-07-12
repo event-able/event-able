@@ -1,5 +1,6 @@
 require 'nokogiri'
 require 'rest-client'
+require 'active_support/all'
 require './src/cache'
 
 api_base = "http://api.openstreetmap.org/api/0.6/map?bbox="
@@ -22,11 +23,40 @@ e.css("item").each do |item|
     format("%.3f", lat+bbox_sizing)
   ].join(",")
 
-  nodes = Nokogiri::XML cache.fetch(name, api_base + query)
-  matching_name_nodes = nodes.css("tag[k='name'][v='#{name}']")
+  raw = cache.fetch(name) do
+    sleep(1) # Don't hammer them!
+    RestClient.get(api_base + query)
+  end
+
+  nodes = Nokogiri::XML raw
+  begin
+    n = name.gsub(/'/, "&quot;")
+    matching_name_nodes = nodes.css("tag[k='name'][v='#{n}']")
+  rescue Exception => e
+    puts name
+    raise e
+  end
+
   ids = matching_name_nodes.map {|n| n.parent.attr "id" }
+  ids = ids.map do |id|
+    cache.fetch("WHEELMAP_NODE_#{id}") do
+      begin
+        sleep(1)
+        RestClient.head "http://wheelmap.org/en/nodes/#{id}"
+        id.to_s
+      rescue
+        begin
+          sleep(1)
+          RestClient.head "http://wheelmap.org/en/nodes/-#{id}"
+          "-#{id}".to_s
+        rescue
+          ""
+        end
+      end
+    end
+  end.reject &:blank?
+
   if ids.count > 1
-    # TODO: Actually fetch each ID to remove bad matches.
     puts "Ambiguity matching #{name}: The following IDs match: #{ids.join " "}"
   elsif ids.count == 1
     puts "#{name}: http://wheelmap.org/en/nodes/#{ids.first}"
