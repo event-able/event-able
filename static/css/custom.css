@@ -1,0 +1,16 @@
+body {
+	background-image: url('../images/melbourne-cityscapes.jpg');
+}
+
+h1, h2 {
+	color: #FFF;
+}
+
+label {
+	color: #EEE;
+}
+
+.button {
+	background-color: #F7F30A;
+	color: #333;
+}
