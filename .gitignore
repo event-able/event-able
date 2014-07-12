@@ -84,5 +84,6 @@ config/geoserver/**/*.png
 # rpm packager artifacts
 /pkg
 
-# docker 
+# docker
 /docker-sandbox
+env
