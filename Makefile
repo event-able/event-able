@@ -10,7 +10,7 @@ help:
 data: \
 	data/events_rss.xml \
 	data/accessibility.json \
-	static/data/events.json \
+	static/data/melbourne.json \
 	data/map.osm \
 
 data/events_rss.xml:
@@ -19,15 +19,15 @@ data/events_rss.xml:
 data/accessibility.json:
 	wget -O $@ 'http://data.melbourne.vic.gov.au/resource/pmhb-s6pn.json'
 
-static/data/events.json: env data/events_rss.xml src/events.py
+static/data/melbourne.json: env data/events_rss.xml src/events.py
 	mkdir -p static/data
-	env/bin/python src/events.py data/events_rss.xml $@
+	env/bin/python src/events.py data/events_rss.xml static/data
 
 env: requirements.pip
 	virtualenv env
 	env/bin/pip install -r requirements.pip
 
-build: env src/build.py static/data/events.json
+build: env src/build.py static/data/melbourne.json
 	env/bin/python src/build.py
 
 serve: build

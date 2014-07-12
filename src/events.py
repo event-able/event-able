@@ -18,13 +18,34 @@ from xml.etree import ElementTree
 import characteristic as ch
 
 
-def build_event_json(input_file, output_file):
+def build_event_json(input_file, output_dir):
     events = parse_events(input_file)
+    events = _prune_historical_events(events)
+    melbourne, regional = _split_by_region(events)
 
-    dicts = [e.to_dict() for e in events
-             if not e.is_historical()]
+    _save_events(melbourne, output_dir + '/melbourne.json')
+    _save_events(regional, output_dir + '/regional.json')
 
-    with open(output_file, 'w') as ostream:
+
+def _prune_historical_events(events):
+    return [e for e in events if not e.is_historical()]
+
+
+def _split_by_region(events):
+    melbourne = []
+    regional = []
+    for e in events:
+        if e.region == 'Melbourne':
+            melbourne.append(e)
+        else:
+            regional.append(e)
+
+    return melbourne, regional
+
+
+def _save_events(events, filename):
+    dicts = [e.to_dict() for e in events]
+    with open(filename, 'w') as ostream:
         json.dump(dicts, ostream)
 
 
