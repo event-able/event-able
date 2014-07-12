@@ -16,9 +16,10 @@
           </div>
             <div class="large-3 small-6 columns">
               <label for="category">
-             	Location:
+             	What?
               </label>
 	          <select id="category">
+	          	<option value="today">All types</option>
 	            <option value="sports">Sports</option>
 	            <option value="arts">Arts</option>
 	            <option value="food">Food and Wine</option>
@@ -28,11 +29,12 @@
             </div>
             <div class="large-3 small-6 columns">
               <label>
-                Price Range:
+                How Much?
               </label>
               <select>
-                <option value="0-5">&#36;0-&#36;5</option>
-                <option value="5-10">&#36;5-&#36;10</option>
+              	<option value="today">Any amount</option>
+                <option value="0">Free</option>
+                <option value="0-10">&#36;0-&#36;10</option>
                 <option value="10-15">&#36;10-&#36;15</option>
                 <option value="15-20">&#36;15-&#36;20</option>
                 <option value="20-25">&#36;20-&#36;25</option>
@@ -45,6 +47,7 @@
                When?
               </label>
               <select id="date">
+              	<option value="today">Any day</option>
                 <option value="today">Today</option>
                 <option value="soon">Soon</option>
                 <option value="later">Later</option>
@@ -55,6 +58,7 @@
                 Access?
               </label>
               <select id="access">
+              	<option value="4">Any</option>
                 <option value="3">Very accessible</option>
                 <option value="2">Partially accessible</option>
                 <option value="1">Not accessible</option>
