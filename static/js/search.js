@@ -29,7 +29,9 @@ function searchMatches(event) {
   var ok = true
 
   // Check location
-  if ($("#location").val() === "Near me") {
+  if ($("#location").val() === "Anywhere") {
+    // Nothing to see here
+  } else if ($("#location").val() === "Near me") {
     ok = ok && eventMatchesMyLocation(event)
   } else {
     throw "No idea what to do now..."
