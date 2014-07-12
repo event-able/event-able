@@ -3,9 +3,8 @@ function onLocationAvailable(position) {
   var latitude = position.coords.latitude;
   var longitude = position.coords.longitude;
   $(function() {
-    // Figure out what happens now...
-    console.log(latitude);
-    console.log(longitude);
+    window.latlng = [latitude, longitude]
+    $("#location").val("My Location")
   })
 }
 
