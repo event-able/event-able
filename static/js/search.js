@@ -1,5 +1,5 @@
 var searchResultTemplate = _.template($("#searchresult_template").html())
-
+var ONE_DAY_IN_MS = 86400000
 var MAX_LATLNG_DISTANCE = 1
 
 
@@ -28,25 +28,53 @@ $(function() {
 function searchMatches(event) {
   var ok = true
 
+  // Check location
   if ($("#location").val() === "Near me") {
     ok = ok && eventMatchesMyLocation(event)
   } else {
     throw "No idea what to do now..."
   }
-  if ($("#category").val() != "any") {
-    ok = ok && $("#category").val() === event.category
+
+  if ($("#access").val() !== "any") {
+    if ($("#access").val() === "very") {
+      ok = ok && event.accessibility.wheelchair === "yes"
+    }
+    if ($("#access").val() === "very") {
+      ok = ok && event.accessibility.wheelchair === "yes"
+    }
+    if ($("#access").val() === "limited") {
+      wc = event.accessibility.wheelchair
+      ok = ok && ((wc === "yes") || (wc === "limited"))
+    }
   }
-  // if ($("#data").val() != "any") {
-  //   today = new Date()
-  //   date = parseDate(event.when)
-  //   if ($("#data").val() === "today") {
-  //     today.getDate()
-  //     today.getMonth()
-  //   }
 
-  //   ok = ok && $("#date").val() === parseDate(event.when)
+  // Check cost
+  if ($("#cost").val() != "any") {
+    ok = ok && ($("#cost").val() === "free") === (event.isfree === "true")
+  }
 
-  // }
+  // Check date :-(
+  if ($("#date").val() != "any") {
+    window.today = new Date()
+    window.date = parseDate(event.date)
+    days_apart = (date - today) / ONE_DAY_IN_MS
+
+    if (days_apart < -1) {
+      return false; // Happened in the past
+    }
+
+    if ($("#date").val() === "today") {
+      ok = ok && days_apart < 1
+    }
+
+    if ($("#date").val() === "soon") {
+      ok = ok && days_apart < 4
+    }
+
+    if ($("#date").val() === "later") {
+      ok = ok && days_apart < 14
+    }
+  }
   return ok
 }
 
