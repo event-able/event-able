@@ -4,8 +4,9 @@ function onLocationAvailable(position) {
   var longitude = position.coords.longitude;
   $(function() {
     window.latlng = [latitude, longitude]
-    $("#location").val("My Location")
+    $("#location").val("Near me")
   })
 }
 
 navigator.geolocation.getCurrentPosition(onLocationAvailable)
+$("#location").val("")
