@@ -43,8 +43,11 @@ watch: env
 serve: build
 	cd output; python -m SimpleHTTPServer
 
-deploy: build
-	env/bin/aws s3 sync --acl=public-read --exclude='*/.*' --delete output/ $(DEST_BUCKET)
+.s3cfg: env
+	env/bin/s3cmd --configure -c .s3cfg
+
+deploy: build .s3cfg
+	env/bin/s3cmd sync -c .s3cfg --acl-public --recursive --delete-removed --exclude='*/.*' output/ $(DEST_BUCKET)
 
 .PHONY: data build serve
 

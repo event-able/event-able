@@ -89,3 +89,4 @@ config/geoserver/**/*.png
 env
 .ipynb_checkpoints
 static/data/
+.s3cfg
