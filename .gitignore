@@ -88,4 +88,4 @@ config/geoserver/**/*.png
 /docker-sandbox
 env
 .ipynb_checkpoints
-static/data/events.json
+static/data/
