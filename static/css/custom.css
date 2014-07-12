@@ -8,7 +8,7 @@ h1, h2 {
 	color: #FFF;
 }
 
-h3 {
+h3, a {
 	color:#F7F30A;
 }
 
@@ -26,4 +26,9 @@ label {
 	padding: 1em;
 	height: 90%;
 	overflow: auto;
+}
+
+footer {
+	margin-top: 18% !important;
+	background-color: rgba(255,255,255,.3);
 }
