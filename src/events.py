@@ -46,7 +46,8 @@ def _split_by_region(events):
 def _save_events(events, filename):
     dicts = [e.to_dict() for e in events]
     with open(filename, 'w') as ostream:
-        json.dump(dicts, ostream)
+        json.dump(dicts, ostream, sort_keys=True, indent=2,
+                  separators=(',', ': '))
 
 
 @ch.attributes(['guid', 'link', 'category', 'title', 'description',
