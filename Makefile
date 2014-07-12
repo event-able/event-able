@@ -17,6 +17,7 @@ data: \
 	static/data/melbourne.json \
 	data/osm/events.list \
 	data/osm/wheelchair.json \
+	data/missing-wheelmap.txt \
 
 data/events_rss.xml:
 	wget -O $@ http://www.eventsvictoria.com/distributionservice/rss.xml
@@ -34,6 +35,9 @@ data/osm/events.list:
 
 data/osm/wheelchair.json: data/osm/events.list src/wheelmap.py
 	env/bin/python src/wheelmap.py data/osm/events.list $@
+
+data/missing-wheelmap.txt: static/data/melbourne.json src/missing_wheelmap.py
+	env/bin/python src/missing_wheelmap.py static/data/melbourne.json >$@
 
 env: requirements.pip
 	virtualenv env
