@@ -2,6 +2,9 @@ help:
 	@echo 'Things you can do with this codebase:'
 	@echo
 	@echo '  make data    download all data sources'
+	@echo '  make build   make html output'
+	@echo '  make env     install sandboxed python dependencies'
+	@echo '  make serve   run a local development server'
 	@echo
 
 data: \
@@ -14,6 +17,16 @@ data/events_rss.xml:
 data/accessibility.json:
 	wget -O $@ 'http://data.melbourne.vic.gov.au/resource/pmhb-s6pn.json'
 
-.PHONY: data
+env:
+	virtualenv env
+	env/bin/pip install -r requirements.pip
+
+build: env
+	env/bin/python src/build.py
+
+serve: build
+	cd output; python -m SimpleHTTPServer
+
+.PHONY: data build serve
 
 .DELETE_ON_ERROR:
