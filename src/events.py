@@ -11,6 +11,8 @@ Parsing the XML event feed.
 import sys
 import optparse
 import datetime
+import urllib
+from xml.sax.saxutils import unescape
 
 import json
 
@@ -82,8 +84,8 @@ class Event(object):
             guid=node.find('guid').text,
             link=node.find('link').text,
             category=node.find('category').text,
-            title=node.find('title').text,
-            description=node.find('description').text,
+            title=_unquote(node.find('title').text),
+            description=_unquote(node.find('description').text),
             region=node.find('{myEvents}marketingRegion').text,
             venue=Venue.parse(node.find('{myEvents}venue')),
             isfree=node.find('{myEvents}freeEntry').text,
@@ -114,7 +116,7 @@ class Venue(object):
             node.find('address'),
         )
         return Venue(
-            name=node.attrib['name'].strip(),
+            name=_unquote(node.attrib['name'].strip()),
             address=address,
             latitude=latitude,
             longitude=longitude,
@@ -154,6 +156,18 @@ def parse_events(input_file):
             events.append(Event.parse(node))
 
     return events
+
+
+def _unquote(v):
+    unescape_table = {
+        '&quot;': '"',
+        '&apos;': "'",
+        '&#39;': "'",
+        '&#233;': u'é',
+        '&#232;': u'è',
+        '&#246;': u'ö',
+    }
+    return unescape(urllib.unquote(v), unescape_table)
 
 
 def _create_option_parser():
