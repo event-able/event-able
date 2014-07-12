@@ -10,24 +10,25 @@ help:
 	@echo
 
 DEST_BUCKET = s3://eventable.in/
+TODAY = $(shell date +%Y-%m-%d)
 
 data: \
-	data/events_rss.xml \
+	data/events-$(TODAY).xml \
 	data/accessibility.json \
 	static/data/melbourne.json \
 	data/osm/events.list \
 	data/osm/wheelchair.json \
 	data/missing-wheelmap.txt \
 
-data/events_rss.xml:
+data/events-$(TODAY).xml:
 	wget -O $@ http://www.eventsvictoria.com/distributionservice/rss.xml
 
 data/accessibility.json:
 	wget -O $@ 'http://data.melbourne.vic.gov.au/resource/pmhb-s6pn.json'
 
-static/data/melbourne.json: env data/events_rss.xml data/osm/wheelchair.json src/events.py
+static/data/melbourne.json: env data/events-$(TODAY).xml data/osm/wheelchair.json src/events.py
 	mkdir -p static/data
-	env/bin/python src/events.py data/events_rss.xml data/osm/wheelchair.json static/data
+	env/bin/python src/events.py data/events-$(TODAY).xml data/osm/wheelchair.json static/data
 
 data/osm/events.list:
 	# This one is *slow*
