@@ -2,6 +2,7 @@ body {
 	background-image: url('../images/melbourne-cityscapes.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
+	background-color: #000;
 }
 
 h1, h2 {
@@ -24,12 +25,14 @@ label {
 .results {
 	background-color: rgba(255,255,255,.7);
 	padding: 1em;
-	height: 90%;
+	height: 75%;
 	overflow: auto;
 }
 
 footer {
-	margin-top: 18% !important;
+	position: absolute;
+	bottom: 0;
+	right: 15%;
 	background-color: rgba(255,255,255,.3);
 }
 
