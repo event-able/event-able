@@ -37,7 +37,7 @@ def build_templates():
         filenames[:] = [f for f in filenames if not f.startswith('_')]
 
         for f in filenames:
-            input_file = path.join(prefix[len(base):], f)
+            input_file = path.join(prefix[len(base) + 1:], f)
             output_file = path.join(OUTPUT_DIR, input_file)
 
             parent_dir = path.dirname(output_file)
