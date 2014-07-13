@@ -55,3 +55,28 @@ footer {
 .search-container {
 	clear: left;
 }
+
+section.top-bar-section {
+	transition: none 0 0;
+	left: 0 !important;
+}
+
+section.top-bar-section ul {
+	width: auto;
+	height: auto !important;
+	display: inline;
+}
+
+
+section.top-bar-section ul li {
+	float: left;
+}
+
+section.top-bar-section ul li a {
+	padding: 0 15px;
+	line-height: 45px;
+}
+
+.top-bar .title-area {
+	float: left;
+}
