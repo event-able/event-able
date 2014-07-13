@@ -9,4 +9,3 @@ function onLocationAvailable(position) {
 }
 
 navigator.geolocation.getCurrentPosition(onLocationAvailable)
-$("#location").val("")

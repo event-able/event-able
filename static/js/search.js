@@ -14,6 +14,7 @@ $(function() {
       })
       $(".results-container").show()
       $(".search").hide()
+      $("footer").hide()
     })
     return false
   })
@@ -21,6 +22,7 @@ $(function() {
   $("#back_to_search").on('click', function(){
     $(".results-container").hide()
     $(".search").show()
+    $("footer").show()
   })
 
 })
@@ -29,13 +31,22 @@ function searchMatches(event) {
   var ok = true
 
   // Check location
-  if ($("#location").val() === "Anywhere") {
+  if ($("#location").val() === "anywhere") {
     // Nothing to see here
-  } else if ($("#location").val() === "Near me") {
+  } else if ($("#location").val() === "near_me") {
     ok = ok && eventMatchesMyLocation(event)
-  } else {
-    throw "No idea what to do now..."
+  } else if ($("#location").val() === "melbourne") {
+    ok = ok && ((event.venue.city === "Melbourne") || (event.venue.city === "Docklands") || (event.venue.city === "Southbank "))
+  } else if ($("#location").val() === "northern") {
+    ok = ok && ((event.venue.city === "Kensington") || (event.venue.city === "Ascot Vale") || (event.venue.city === "Flemington") || (event.venue.city === "Sunbury") || (event.venue.city === "Carlton" ) || (event.venue.city === "Greenvale") || (event.venue.city === "North Melbourne") || (event.venue.city === "Parkville") || (event.venue.city === "Carlton North") || (event.venue.city === "Keilor") || (event.venue.city === "Collingwood"))
+  } else if ($("#location").val() === "eastern") {
+    ok = ok && ((event.venue.city === "Mount Waverley") || (event.venue.city === "Brunswick") || (event.venue.city === "Brunswick East") || (event.venue.city === "Warrandyte") || (event.venue.city === "East Melbourne") || (event.venue.city === "Ivanhoe") || (event.venue.city === "Ivanhoe East") || (event.venue.city === "Richmond") || (event.venue.city === "Hawthorn") || (event.venue.city === "Box Hill") || (event.venue.city === "Malvern") || (event.venue.city === "Kooyong") || (event.venue.city ===  "Surrey Hills North") || (event.venue.city ===  "Surrey Hills") || (event.venue.city === "Kew") || (event.venue.city === "Box Hill"))
+  } else if ($("#location").val() === "southern") {
+    ok = ok && ((event.venue.city === "South Melbourne") || (event.venue.city === "St Kilda") || (event.venue.city === "Moorabbin") || (event.venue.city === "Mordialloc") || (event.venue.city === "Bentleigh East") || (event.venue.city === "Springvale") || (event.venue.city === "Port Melbourne") || (event.venue.city === "Albert Park") || (event.venue.city === "Cheltenham East") || (event.venue.city === "Cheltenham") || (event.venue.city === "Clayton South") || (event.venue.city === "Clayton") || (event.venue.city === "Dandenong"))
+  } else if ($("#location").val() === "western") {
+    ok = ok && ((event.venue.city === "Williamstown") || (event.venue.city === "Bacchus Marsh") || (event.venue.city === "Laverton") || (event.venue.city === "Werribee South") || (event.venue.city === "Werribee"))
   }
+
 
   if ($("#access").val() !== "any") {
     if ($("#access").val() === "very") {
