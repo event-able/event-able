@@ -19,6 +19,8 @@ import json
 from xml.etree import ElementTree
 import characteristic as ch
 
+DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_Generic_image__calendar_iStock_000021269370.jpg'  # noqa
+
 
 def build_event_json(input_file, wheelchair_file, output_dir):
     events = parse_events(input_file)
@@ -77,7 +79,7 @@ def _save_events(events, filename):
 
 @ch.attributes(['guid', 'link', 'category', 'title', 'description',
                 'region', 'venue', 'isfree', 'date', 'tags',
-                'accessibility', 'images'])
+                'accessibility', 'image'])
 class Event(object):
     @classmethod
     def parse(cls, node):
@@ -92,14 +94,19 @@ class Event(object):
             isfree=node.find('{myEvents}freeEntry').text,
             date=parse_date(node.find('{myEvents}eventDate').text),
             tags=[t.text for t in node.findall('{myEvents}tags')],
-            images=cls._get_image_links(node),
+            image=cls._get_first_image(node),
             accessibility=None,
         )
 
     @staticmethod
-    def _get_image_links(node):
+    def _get_first_image(node):
         query = '{myEvents}multimedia/image/serverPath'
-        return [l.text for l in node.findall(query)]
+        images = [l.text for l in node.findall(query)]
+        if images:
+            return images[0]
+
+        return DEFAULT_IMAGE
+
 
     def set_accessibility(self, v):
         self.accessibility = v
