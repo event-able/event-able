@@ -60,7 +60,8 @@ def _load_venue_accessibility(venues_file):
 def _add_venue_accessibility(venues, events):
     by_name = {v['name']: v for v in venues
                if 'name' in v}
-    by_address = {v['address']: v for v in venues}
+    by_address = {v['address']: v for v in venues
+                  if 'address' in v}
 
     for e in events:
         v = _match_venue(e, by_name, by_address)

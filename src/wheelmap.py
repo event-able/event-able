@@ -34,7 +34,7 @@ def _load_venues(input_file):
         for l in istream:
             name, link = l.rstrip().split(':', 1)
             venues.append({'name': name,
-                           'link': link})
+                           'acc_user_link': link})
 
     return venues
 
@@ -43,7 +43,7 @@ def _detect_accessibility(venues):
     for v in venues:
         sys.stdout.write('.')
         sys.stdout.flush()
-        v['wheelchair'] = _check_wheelmap(v['link'])
+        v['acc_user_rating'] = _check_wheelmap(v['acc_user_link'])
 
     print()
 
