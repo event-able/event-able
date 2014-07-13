@@ -22,7 +22,6 @@ import characteristic as ch
 DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_Generic_image__calendar_iStock_000021269370.jpg'  # noqa
 
 ALIASES = {
-    "Shrine of Remembrance": "Shrine of Remembrance Reserve",
     "Royal Exhibition Building": "Exhibition Building & Melbourne Museum",
     "Royal Exhibition Building and Carlton Gardens South": "Exhibition Building & Melbourne Museum"
 }
@@ -80,11 +79,14 @@ def _add_venue_accessibility(venues, events):
 
 def _match_venue(e, by_name, by_address):
     venue = e.venue
-    if venue.name in by_name:
-        return by_name[venue.name]
 
     if venue.name in ALIASES:
-        return by_name[ALIASES.get(venue.name)]
+        import pdb
+        pdb.set_trace()
+        return by_name[ALIASES[venue.name]]
+
+    if venue.name in by_name:
+        return by_name[venue.name]
 
     address = u'{0}, {1} {2}'.format(
         venue.address[0].title(),
