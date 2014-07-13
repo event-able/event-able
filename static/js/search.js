@@ -47,7 +47,7 @@ function searchMatches(event) {
     ok = ok && ((event.venue.city === "Williamstown") || (event.venue.city === "Bacchus Marsh") || (event.venue.city === "Laverton") || (event.venue.city === "Werribee South") || (event.venue.city === "Werribee"))
   }
 
-
+  // Check accessibility
   if ($("#access").val() !== "any") {
     if ($("#access").val() === "very") {
       ok = ok && event.accessibility.wheelchair === "yes"
