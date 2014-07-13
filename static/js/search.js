@@ -107,9 +107,7 @@ function eventMatchesMyLocation(event) {
   if (window.latlng) {
     var dx = Math.abs(parseFloat(event.venue.latitude) - window.latlng[0])
     var dy = Math.abs(parseFloat(event.venue.longitude) - window.latlng[1])
-    // Shortcut: We can skip pythagoras here since we're comparing to 1.
-    return dx + dy < 0.06
+    return Math.pow(dx, 2) + Math.pow(dy, 2) < 0.0001
   }
   return false;
 }
-
