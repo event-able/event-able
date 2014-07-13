@@ -32,7 +32,7 @@ data/venues.json: data/accessibility.csv data/osm/wheelchair.json src/venues.py
 	@echo 'Parsing accessibiliy data for venues'
 	env/bin/python src/venues.py $< data/osm/wheelchair.json $@
 
-static/data/melbourne.json: data/events-$(TODAY).xml data/osm/wheelchair.json src/events.py env
+static/data/melbourne.json: data/events-$(TODAY).xml data/venues.json src/events.py env
 	mkdir -p static/data
 	env/bin/python src/events.py $< data/venues.json static/data
 
