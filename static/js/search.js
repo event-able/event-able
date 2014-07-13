@@ -2,30 +2,31 @@ var searchResultTemplate = _.template($("#searchresult_template").html())
 var ONE_DAY_IN_MS = 86400000
 var MAX_LATLNG_DISTANCE = 1
 
-
 $(function() {
   // Populate results container
   from = $("#datasrc").attr("href")
-  loadData = $.getJSON(from)
+  window.allEventXhr = $.getJSON(from)
 
-  loadData.then(function(data) {
+  allEventXhr.then(function(data) {
+    window.allEvents = data
     var container = $(".results-container .search-results")
     _.each(data, function(ev) {
-      container.append(searchResultTemplate(ev))
+      _.defer(function() {
+        container.append(searchResultTemplate(ev))
+      })
     })
+    $("#search-button").attr('disabled', false)
   })
 
   var doSearch = function() {
-    loadData.then(function(data) {
-      _.each(data, function(ev) {
-        if (searchMatches(ev)) {
-          $("#event_" + ev.guid).show()
-        } else {
-          $("#event_" + ev.guid).hide()
-        }
-      })
-      $(".results-container").show()
+    _.each(window.allEvents, function(ev) {
+      if (searchMatches(ev)) {
+        $("#event_" + ev.guid).show()
+      } else {
+        $("#event_" + ev.guid).hide()
+      }
     })
+    $(".results-container").show()
     return false
   }
   $(".search-form").submit(doSearch)
