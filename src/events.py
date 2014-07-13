@@ -134,7 +134,7 @@ class Event(object):
         d['venue'] = d['venue'].to_dict()
         d['date'] = str(d['date'])
         if not d['accessibility']:
-            del d['accessibility']
+            d['accessibility'] = {}
         return d
 
 

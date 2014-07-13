@@ -20,30 +20,39 @@
             <li>
               <ul>
                 <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
-                <li><strong>Access:</strong>
-                  <%
-                    switch (accessibility.wheelchair) {
-                    case "unknown":
-                      print("Not rated")
-                      break;
-                    case "limited":
-                      print("Some areas not accessible")
-                      break;
-                    case "yes":
-                      print("Wheelchair accessible")
-                      break;
-                    default:
-                      print("Unknown rating " + accessibility.wheelchair)
-                      break;
-                    }
-                  %>
-                </li>
+
+                <% if (accessibility.acc_official_rating > 0) { %>
+                  <li>
+                    <strong>Official accessibility rating:</strong>
+                    <span class="official">
+                      <%= accessibility.acc_official_type %>
+                    </span>
+                  </li>
+                <% } %>
+
+
+                <% if (accessibility.acc_user_rating) { %>
+                  <li>
+                    <strong>Wheelmap rating:</strong>
+                    <span class="crowdsourced">
+                      <% if (accessibility.acc_user_rating === "unknown") { %>
+                        Not rated
+                      <% } %>
+                      <% if (accessibility.acc_user_rating === "limited") { %>
+                        Some areas not accessible
+                      <% } %>
+                      <% if (accessibility.acc_user_rating === "yes") { %>
+                        Wheelchair accessible
+                      <% } %>
+                    </span>
+                  </li>
+                <% } %>
               </ul>
             </li>
           </ul>
-          <% if (accessibility.wheelmap) { %>
+          <% if (accessibility.acc_user_link) { %>
             <a
-              href="<%- accessibility.wheelmap %>"
+              href="<%- accessibility.acc_user_link %>"
               class="button expand medium"
               target="_blank">
               <span>Rate '<%- venue.name %>' on Wheelmap</span>

@@ -54,15 +54,17 @@ function searchMatches(event) {
 
   // Check accessibility
   if ($("#access").val() !== "any") {
+    user_rating = event.accessibility.acc_user_rating
+    official_rating = event.accessibility.acc_official_rating
+
+    very_accessible = (user_rating === "yes") || (official_rating > 2)
+    somewhat_accessible = (user_rating === "limited") || (official_rating > 1)
+
     if ($("#access").val() === "very") {
-      ok = ok && event.accessibility.wheelchair === "yes"
-    }
-    if ($("#access").val() === "very") {
-      ok = ok && event.accessibility.wheelchair === "yes"
+      ok = ok && very_accessible
     }
     if ($("#access").val() === "limited") {
-      wc = event.accessibility.wheelchair
-      ok = ok && ((wc === "yes") || (wc === "limited"))
+      ok = ok && (somewhat_accessible || very_accessible)
     }
   }
 
