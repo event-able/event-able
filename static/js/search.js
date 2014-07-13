@@ -13,16 +13,8 @@ $(function() {
         container.append(searchResultTemplate(ev))
       })
       $(".results-container").show()
-      $(".search").hide()
-      $("footer").hide()
     })
     return false
-  })
-
-  $("#back_to_search").on('click', function(){
-    $(".results-container").hide()
-    $(".search").show()
-    $("footer").show()
   })
 
 })

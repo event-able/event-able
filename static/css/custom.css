@@ -11,7 +11,7 @@ h1, h2 {
 	color: #FFF;
 }
 
-h3 {
+h3, .event_link{
 	color:#007095;
 }
 

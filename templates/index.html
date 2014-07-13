@@ -1,7 +1,7 @@
 {% extends "_base.html" %}
 
 {% block content %}
-<div class="small-12 columns">
+<div class="small-12 columns" id="top">
 <section class="search">
   <div class="row">
     <div class="small-12 large-10 columns small-centered">
@@ -11,10 +11,10 @@
   </div>
 </section>
 <section class="results-container">
-	<div class="row">
-  	<h2 class="left">Search Results</h2> <a href="#" class="button right" id="back_to_search">Back to Search</a>
-  </div>
+  <h2 >Search Results</h2>
   {% include "results/index.html" %}
+  <a href="#top" class="button right" id="back_to_search">Back to Top</a>
+  </div>
 </section>
 
 </div>
