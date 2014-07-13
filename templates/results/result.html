@@ -34,21 +34,20 @@
                   print("Not found on wheelmap.org")
                   break;
                 case "limited":
+                  print("<a href='" + accessibility.wheelmap + "'>")
                   print("Rated yellow on wheelmap.org")
+                  print("</a>")
                   break;
                 case "yes":
+                  print("<a href='" + accessibility.wheelmap + "'>")
                   print("Rated green on wheelmap.org")
+                  print("</a>")
                   break;
                 default:
                   print("Unknown rating " + accessibility.wheelchair)
                   break;
               }
             %>
-          </div>
-          <div class="large-3 columns" style="margin-top: 2em">
-            <a <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
-              href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Rate the Accessibilty</span>
-            </a>
           </div>
         </div>
       </div>

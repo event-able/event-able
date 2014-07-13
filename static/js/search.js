@@ -29,6 +29,7 @@ $(function() {
     return false
   }
   $(".search-form").submit(doSearch)
+  $(".search-form").change(function() { $(".results-container").hide()})
 })
 
 function searchMatches(event) {
