@@ -22,28 +22,32 @@ def parse_venue_info(input_csv, wheelmap_json, output_json):
 
     # only keep ones with accessibility ratings
     venues = [v for v in venues
-              if v['acc_official_rating'] > 0 or 'acc_user_rating' in v]
+              if v.get('acc_official_rating', 0) > 0
+              or 'acc_user_rating' in v]
 
     _dump_venues(venues, output_json)
 
 
 def _add_wheelmap(venues, wheelmap):
+    # combine venues together
+    used = set()
     for v in venues:
         if 'name' in v:
             name = v['name']
             if name in wheelmap:
+                used.add(name)
                 v.update(wheelmap[name])
+
+    # also add venues that we didn't combine together
+    venues.extend([
+        v for v in wheelmap.itervalues()
+        if v['name'] not in used
+    ])
 
 
 def _load_wheelmap_venues(input_file):
     venues = json.load(open(input_file))
-    by_name = {
-        v['name']: {
-            'acc_user_link': v['link'],
-            'acc_user_rating': v['wheelchair'],
-        }
-        for v in venues
-    }
+    by_name = {v['name']: v for v in venues}
     return by_name
 
 
