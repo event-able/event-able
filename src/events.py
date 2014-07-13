@@ -31,6 +31,7 @@ def build_event_json(input_file, wheelchair_file, output_dir):
 
     _save_events(melbourne, output_dir + '/melbourne.json')
     _save_events(regional, output_dir + '/regional.json')
+    _save_events(events, output_dir + '/all.json')
 
 
 def _prune_historical_events(events):
@@ -76,10 +77,10 @@ def _save_events(events, filename):
 
 @ch.attributes(['guid', 'link', 'category', 'title', 'description',
                 'region', 'venue', 'isfree', 'date', 'tags',
-                'accessibility'])
+                'accessibility', 'images'])
 class Event(object):
-    @staticmethod
-    def parse(node):
+    @classmethod
+    def parse(cls, node):
         return Event(
             guid=node.find('guid').text,
             link=node.find('link').text,
@@ -91,8 +92,14 @@ class Event(object):
             isfree=node.find('{myEvents}freeEntry').text,
             date=parse_date(node.find('{myEvents}eventDate').text),
             tags=[t.text for t in node.findall('{myEvents}tags')],
+            images=cls._get_image_links(node),
             accessibility=None,
         )
+
+    @staticmethod
+    def _get_image_links(node):
+        query = '{myEvents}multimedia/image/serverPath'
+        return [l.text for l in node.findall(query)]
 
     def set_accessibility(self, v):
         self.accessibility = v
