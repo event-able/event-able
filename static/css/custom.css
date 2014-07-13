@@ -46,3 +46,8 @@ footer {
 .search-form {
 	margin-top: 10%;
 }
+
+.region_nav {
+	background-color: rgba(10, 10, 10, 0.2);
+	width: 100%;
+}
