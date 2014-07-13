@@ -133,6 +133,8 @@ class Event(object):
         d = self.__dict__.copy()
         d['venue'] = d['venue'].to_dict()
         d['date'] = str(d['date'])
+        if not d['accessibility']:
+            del d['accessibility']
         return d
 
 
@@ -201,7 +203,7 @@ def _unquote(v):
 
 def _create_option_parser():
     usage = \
-"""%prog [options] input_file.xml wheelmap.json output_file.json
+"""%prog [options] input_file.xml venues.json output_file.json
 
 Turn the event feed into JSON."""  # nopep8
 

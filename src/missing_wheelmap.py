@@ -21,8 +21,9 @@ def main(event_json):
 
     seen = set()
 
+    no_match = set()
     for e in events:
-        if 'wheelmap' in e['accessibility']:
+        if 'acc_user_rating' in e.get('accessibility', no_match):
             continue
 
         name = e['venue']['name']
