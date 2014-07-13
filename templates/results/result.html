@@ -7,12 +7,8 @@
       <h3><%= title %></h5>
       <p><a href="<%- link %>"> Info</a><!-- | <a todo="true" href="#">RSPV</a></p>-->
     </div>
-    <div class=" large-3 columns">
+
       <!--<a todo="true" href="#" class="button expand medium"><span>Add to Calender</span> </a>-->
-     <a
-     <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
-     href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Accessible Information</span></a>
-    </div>
     <div class="row">
       <div class=" large-12 columns">
         <ul class="large-block-grid-2">
@@ -20,18 +16,27 @@
             <ul>
               <li><strong>Where:</strong> <%- venue.name %></li>
               <li><strong>When:</strong> <%- date %></li>
-              <li><strong>Access:</strong>
-                <%= accessibility.wheelchair === "unknown" ? "No information" :
-                   (accessibility.wheelchair === "yes" ? "Very accessible" : "Just a bit accessible")%></li>
-              <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
             </ul>
           </li>
           <li>
             <ul>
-              <li><strong>What:</strong> <%- description %></li>
+              <li><strong>Suburb:</strong> <%- venue.city %></li>
+              <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
             </ul>
           </li>
         </ul>
+        <strong>What:</strong> <%- description %>
+        <div class="row">
+        <div class="large-6 columns" style="padding: 2em">
+          <strong>Access:</strong>
+                <%= accessibility.wheelchair === "unknown" ? "No information" :
+                   (accessibility.wheelchair === "yes" ? "Very accessible" : "Just a bit accessible")%>
+        </div>
+        <div class="large-3 columns" style="margin-top: 2em">
+          <a <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
+            href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Rate the Accessibilty</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
