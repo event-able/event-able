@@ -8,5 +8,8 @@ function onLocationAvailable(position) {
   })
 }
 
-$("#location").val("anywhere")
+
+$(function() {
+  $("#location").val("anywhere")
+})
 navigator.geolocation.getCurrentPosition(onLocationAvailable)
