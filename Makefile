@@ -48,7 +48,7 @@ build: env src/build.py static/data/melbourne.json
 	env/bin/python src/build.py
 
 watch: env
-	env/bin/watchmedo shell-command -c "make build" -R static templates
+	env/bin/watchmedo shell-command --interval 2 --wait -c "make build" -R static templates
 
 serve: build
 	cd output; python -m SimpleHTTPServer
