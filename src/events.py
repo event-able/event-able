@@ -23,8 +23,9 @@ DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_
 
 ALIASES = {
     "Royal Exhibition Building": "Exhibition Building & Melbourne Museum",
-    "Royal Exhibition Building and Carlton Gardens South": "Exhibition Building & Melbourne Museum"
+    "Royal Exhibition Building and Carlton Gardens South": "Exhibition Building & Melbourne Museum",  # noqa
 }
+
 
 def build_event_json(input_file, venues_file, output_dir):
     events = parse_events(input_file)
@@ -81,8 +82,6 @@ def _match_venue(e, by_name, by_address):
     venue = e.venue
 
     if venue.name in ALIASES:
-        import pdb
-        pdb.set_trace()
         return by_name[ALIASES[venue.name]]
 
     if venue.name in by_name:
