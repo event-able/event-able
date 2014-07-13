@@ -13,42 +13,49 @@
           <ul class="large-block-grid-2">
             <li>
               <ul>
-                <li><strong>Where:</strong> <%- venue.name %></li>
+                <li><strong>Where:</strong> <%- venue.name %>, <%- venue.city %></li>
                 <li><strong>When:</strong> <%- date %></li>
               </ul>
             </li>
             <li>
               <ul>
-                <li><strong>Suburb:</strong> <%- venue.city %></li>
                 <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
+                <li><strong>Access:</strong>
+                  <%
+                    switch (accessibility.wheelchair) {
+                      case "unknown":
+                        print("Not found on wheelmap.org")
+                        break;
+                      case "limited":
+                        print("Yellow")
+                        break;
+                      case "yes":
+                        print("Green")
+                        break;
+                      default:
+                        print("Unknown rating " + accessibility.wheelchair)
+                        break;
+                    }
+                  %>
+                </li>
               </ul>
             </li>
           </ul>
-          <div class="description"><p><%= _.escape(description).replace("\n", "</p><p>") %></p></div>
-          <div class="row">
-          <div class="large-6 columns wheelmap-<%= accessibility.wheelchair %>" style="padding: 2em">
-            <strong>Access:</strong>
-            <%
-              switch (accessibility.wheelchair) {
-                case "unknown":
-                  print("Not found on wheelmap.org")
-                  break;
-                case "limited":
-                  print("<a href='" + accessibility.wheelmap + "'>")
-                  print("Rated yellow on wheelmap.org")
-                  print("</a>")
-                  break;
-                case "yes":
-                  print("<a href='" + accessibility.wheelmap + "'>")
-                  print("Rated green on wheelmap.org")
-                  print("</a>")
-                  break;
-                default:
-                  print("Unknown rating " + accessibility.wheelchair)
-                  break;
-              }
-            %>
+          <% if (accessibility.wheelmap) { %>
+            <a
+              href="<%- accessibility.wheelmap %>"
+              class="button expand medium"
+              target="_blank">
+              <span>Rate '<%- venue.name %>' on Wheelmap</span>
+            </a>
+          <% } %>
+
+          <div class="description">
+            <p>
+              <%= _.escape(description).replace("\n", "</p><p>") %>
+            </p>
           </div>
+
         </div>
       </div>
     </div>
