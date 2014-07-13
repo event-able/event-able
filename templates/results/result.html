@@ -23,18 +23,18 @@
                 <li><strong>Access:</strong>
                   <%
                     switch (accessibility.wheelchair) {
-                      case "unknown":
-                        print("Not found on wheelmap.org")
-                        break;
-                      case "limited":
-                        print("Yellow")
-                        break;
-                      case "yes":
-                        print("Green")
-                        break;
-                      default:
-                        print("Unknown rating " + accessibility.wheelchair)
-                        break;
+                    case "unknown":
+                      print("Not rated")
+                      break;
+                    case "limited":
+                      print("Some areas not accessible")
+                      break;
+                    case "yes":
+                      print("Wheelchair accessible")
+                      break;
+                    default:
+                      print("Unknown rating " + accessibility.wheelchair)
+                      break;
                     }
                   %>
                 </li>
