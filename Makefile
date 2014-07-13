@@ -15,7 +15,7 @@ TODAY = $(shell date +%Y-%m-%d)
 data: \
 	data/events-$(TODAY).xml \
 	data/venues.json \
-	static/data/melbourne.json \
+	static/data/all.json \
 	data/osm/events.list \
 	data/osm/wheelchair.json \
 	data/missing-wheelmap.txt \
@@ -32,9 +32,10 @@ data/venues.json: data/accessibility.csv data/osm/wheelchair.json src/venues.py
 	@echo 'Parsing accessibiliy data for venues'
 	env/bin/python src/venues.py $< data/osm/wheelchair.json $@
 
-static/data/melbourne.json: data/events-$(TODAY).xml data/venues.json src/events.py env
+static/data/all.json: data/events-$(TODAY).xml data/venues.json src/events.py env
 	mkdir -p static/data
 	env/bin/python src/events.py $< data/venues.json static/data
+	env/bin/python src/print_coverage.py $@
 
 data/osm/events.list:
 	# This one is *slow*
@@ -46,14 +47,14 @@ data/osm/combined.list: data/osm/events.list data/osm/manual.list
 data/osm/wheelchair.json: data/osm/combined.list src/wheelmap.py
 	env/bin/python src/wheelmap.py data/osm/combined.list $@
 
-data/missing-wheelmap.txt: static/data/melbourne.json src/missing_wheelmap.py
-	env/bin/python src/missing_wheelmap.py static/data/melbourne.json >$@
+data/missing-wheelmap.txt: static/data/all.json src/missing_wheelmap.py
+	env/bin/python src/missing_wheelmap.py static/data/all.json >$@
 
 env: requirements.pip
 	virtualenv env
 	env/bin/pip install -r requirements.pip
 
-build: env src/build.py static/data/melbourne.json
+build: env src/build.py static/data/all.json
 	env/bin/python src/build.py
 
 watch: env

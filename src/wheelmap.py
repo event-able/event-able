@@ -23,6 +23,7 @@ TOKEN = os.environ['WHEELMAP_API_TOKEN']
 
 
 def check_wheelmap(input_file, output_file):
+    print('Checking wheelmap for accessibility...')
     venues = _load_venues(input_file)
     _detect_accessibility(venues)
     _save_venues_as_json(venues, output_file)
@@ -32,7 +33,7 @@ def _load_venues(input_file):
     venues = []
     with open(input_file) as istream:
         for l in istream:
-            name, link = l.rstrip().split(':', 1)
+            name, link = l.rstrip().split(': ', 1)
             venues.append({'name': name,
                            'acc_user_link': link})
 
@@ -40,10 +41,10 @@ def _load_venues(input_file):
 
 
 def _detect_accessibility(venues):
-    for v in venues:
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        v['acc_user_rating'] = _check_wheelmap(v['acc_user_link'])
+    for i, v in enumerate(venues):
+        link = v['acc_user_link']
+        print('({0}/{1}) {2}'.format(i + 1, len(venues), link))
+        v['acc_user_rating'] = _check_wheelmap(link)
 
     print()
 
