@@ -22,12 +22,12 @@ import characteristic as ch
 DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_Generic_image__calendar_iStock_000021269370.jpg'  # noqa
 
 
-def build_event_json(input_file, wheelchair_file, output_dir):
+def build_event_json(input_file, venues_file, output_dir):
     events = parse_events(input_file)
     events = _prune_historical_events(events)
     events = sorted(events, key=lambda e: e.date)
 
-    venues = _load_venue_accessibility(wheelchair_file)
+    venues = _load_venue_accessibility(venues_file)
     _add_venue_accessibility(venues, events)
 
     melbourne, regional = _split_by_region(events)
@@ -53,22 +53,37 @@ def _split_by_region(events):
     return melbourne, regional
 
 
-def _load_venue_accessibility(wheelchair_file):
-    return json.load(open(wheelchair_file))
+def _load_venue_accessibility(venues_file):
+    return json.load(open(venues_file))
 
 
 def _add_venue_accessibility(venues, events):
-    by_name = {v['name']: v for v in venues}
+    by_name = {v['name']: v for v in venues
+               if 'name' in v}
+    by_address = {v['address']: v for v in venues}
 
     for e in events:
-        if e.venue.name in by_name:
-            v = by_name[e.venue.name]
-            record = {'wheelmap': v['link'],
-                      'wheelchair': v['wheelchair']}
-        else:
-            record = {'wheelchair': 'unknown'}
+        v = _match_venue(e, by_name, by_address)
+        if v:
+            e.set_accessibility({
+                a: b
+                for a, b in v.iteritems()
+                if a.startswith('acc_')
+            })
 
-        e.set_accessibility(record)
+
+def _match_venue(e, by_name, by_address):
+    venue = e.venue
+    if venue.name in by_name:
+        return by_name[venue.name]
+
+    address = u'{0}, {1} {2}'.format(
+        venue.address[0].title(),
+        venue.city.title(),
+        venue.postcode
+    )
+    if address in by_address:
+        return by_address[address]
 
 
 def _save_events(events, filename):
