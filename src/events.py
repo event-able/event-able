@@ -25,6 +25,7 @@ DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_
 def build_event_json(input_file, wheelchair_file, output_dir):
     events = parse_events(input_file)
     events = _prune_historical_events(events)
+    events = sorted(events, key=lambda e: e.date)
 
     venues = _load_venue_accessibility(wheelchair_file)
     _add_venue_accessibility(venues, events)
@@ -106,7 +107,6 @@ class Event(object):
             return images[0]
 
         return DEFAULT_IMAGE
-
 
     def set_accessibility(self, v):
         self.accessibility = v
