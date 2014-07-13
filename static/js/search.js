@@ -4,19 +4,31 @@ var MAX_LATLNG_DISTANCE = 1
 
 
 $(function() {
-  $(".search-form").submit(function() {
-    from = $("#datasrc").attr("href")
-    $.getJSON(from).then(function(data) {
-      var container = $(".results-container .search-results")
-      container.empty()
-      _.each(_.filter(data, searchMatches), function(ev) {
-        container.append(searchResultTemplate(ev))
+  // Populate results container
+  from = $("#datasrc").attr("href")
+  loadData = $.getJSON(from)
+
+  loadData.then(function(data) {
+    var container = $(".results-container .search-results")
+    _.each(data, function(ev) {
+      container.append(searchResultTemplate(ev))
+    })
+  })
+
+  var doSearch = function() {
+    loadData.then(function(data) {
+      _.each(data, function(ev) {
+        if (searchMatches(ev)) {
+          $("#event_" + ev.guid).show()
+        } else {
+          $("#event_" + ev.guid).hide()
+        }
       })
       $(".results-container").show()
     })
     return false
-  })
-
+  }
+  $(".search-form").submit(doSearch)
 })
 
 function searchMatches(event) {

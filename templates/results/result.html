@@ -1,39 +1,55 @@
-<div class="large-2 columns">
-  <a href="<%- link %>"><img src="<%- image %>" alt="<%= title %>_event_logo" class="thumbnail"></a>
-</div>
-<div class="large-10 columns" style="border-bottom: #F7F30A solid 1px; margin-top: 0.5em;">
-  <div class="row">
-    <div class=" large-9 columns">
-      <h3><%= title %></h5>
-      <p><a href="<%- link %>" class="event_link">VIC Events Information</a>
-    </div>
+<div id="event_<%= guid %>">
+  <div class="large-2 columns">
+    <a href="<%- link %>"><img src="<%- image %>" alt="<%= title %>_event_logo" class="thumbnail"></a>
+  </div>
+  <div class="large-10 columns" style="border-bottom: #F7F30A solid 1px; margin-top: 0.5em;">
     <div class="row">
-      <div class=" large-12 columns">
-        <ul class="large-block-grid-2">
-          <li>
-            <ul>
-              <li><strong>Where:</strong> <%- venue.name %></li>
-              <li><strong>When:</strong> <%- date %></li>
-            </ul>
-          </li>
-          <li>
-            <ul>
-              <li><strong>Suburb:</strong> <%- venue.city %></li>
-              <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
-            </ul>
-          </li>
-        </ul>
-        <strong>What:</strong> <%- description %>
-        <div class="row">
-        <div class="large-6 columns" style="padding: 2em">
-          <strong>Access:</strong>
-                <%= accessibility.wheelchair === "unknown" ? "No information" :
-                   (accessibility.wheelchair === "yes" ? "Very accessible" : "Just a bit accessible")%>
-        </div>
-        <div class="large-3 columns" style="margin-top: 2em">
-          <a <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
-            href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Rate the Accessibilty</span>
-          </a>
+      <div class=" large-9 columns">
+        <h3><%= title %></h3>
+        <p><a class="event_link" href="<%- link %>">VIC Events Information</a></p>
+      </div>
+      <div class="row">
+        <div class=" large-12 columns">
+          <ul class="large-block-grid-2">
+            <li>
+              <ul>
+                <li><strong>Where:</strong> <%- venue.name %></li>
+                <li><strong>When:</strong> <%- date %></li>
+              </ul>
+            </li>
+            <li>
+              <ul>
+                <li><strong>Suburb:</strong> <%- venue.city %></li>
+                <li><strong>Free:</strong> <%= isfree === "true" ? "Free event" : "Paid event" %></li>
+              </ul>
+            </li>
+          </ul>
+          <div class="description"><p><%= _.escape(description).replace("\n", "</p><p>") %></p></div>
+          <div class="row">
+          <div class="large-6 columns wheelmap-<%= accessibility.wheelchair %>" style="padding: 2em">
+            <strong>Access:</strong>
+            <%
+              switch (accessibility.wheelchair) {
+                case "unknown":
+                  print("Not found on wheelmap.org")
+                  break;
+                case "limited":
+                  print("Rated yellow on wheelmap.org")
+                  break;
+                case "yes":
+                  print("Rated green on wheelmap.org")
+                  break;
+                default:
+                  print("Unknown rating " + accessibility.wheelchair)
+                  break;
+              }
+            %>
+          </div>
+          <div class="large-3 columns" style="margin-top: 2em">
+            <a <%= accessibility.wheelmap ? '' : 'style="display: none;"'%>
+              href="<%- accessibility.wheelmap %>" class="button expand medium"><span>Rate the Accessibilty</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
