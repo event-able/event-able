@@ -105,7 +105,7 @@ class Event(object):
             category=node.find('category').text,
             title=_unquote(node.find('title').text),
             description=_unquote(node.find('description').text),
-            region=node.find('{myEvents}marketingRegion').text,
+            region=node.find('{myEvents}marketingRegion').text or 'Melbourne',
             venue=Venue.parse(node.find('{myEvents}venue')),
             isfree=node.find('{myEvents}freeEntry').text,
             date=parse_date(node.find('{myEvents}eventDate').text),
