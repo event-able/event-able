@@ -1,12 +1,4 @@
 
-body {
-	background: url('../images/melbourne-cityscapes.jpg');
-	background-size: cover;
-	background-position: top;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-}
-
 h1, h2 {
 	color: #FFF;
 }
