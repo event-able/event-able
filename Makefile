@@ -40,8 +40,11 @@ data/osm/events.list:
 	# This one is *slow*
 	bundle exec ruby src/events.rb | grep http > events.list | sort | uniq > events2.list
 
-data/osm/wheelchair.json: data/osm/events.list src/wheelmap.py
-	env/bin/python src/wheelmap.py data/osm/events.list $@
+data/osm/combined.list: data/osm/events.list data/osm/manual.list
+	cat data/osm/events.list data/osm/manual.list >$@
+
+data/osm/wheelchair.json: data/osm/combined.list src/wheelmap.py
+	env/bin/python src/wheelmap.py data/osm/combined.list $@
 
 data/missing-wheelmap.txt: static/data/melbourne.json src/missing_wheelmap.py
 	env/bin/python src/missing_wheelmap.py static/data/melbourne.json >$@
