@@ -15,6 +15,10 @@ h3, .event_link{
 	color:#007095;
 }
 
+.results li {
+	list-style-type: none;
+}
+
 a {
 	color: #F7F30A;
 	text-decoration: underline;
