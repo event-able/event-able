@@ -19,10 +19,13 @@ import json
 from xml.etree import ElementTree
 import characteristic as ch
 
+DEFAULT_IMAGE = 'http://my.visitvictoria.com/Multimedia/WLS_Thumb__9441161_TVIC_Generic_image__calendar_iStock_000021269370.jpg'  # noqa
+
 
 def build_event_json(input_file, wheelchair_file, output_dir):
     events = parse_events(input_file)
     events = _prune_historical_events(events)
+    events = sorted(events, key=lambda e: e.date)
 
     venues = _load_venue_accessibility(wheelchair_file)
     _add_venue_accessibility(venues, events)
@@ -31,6 +34,7 @@ def build_event_json(input_file, wheelchair_file, output_dir):
 
     _save_events(melbourne, output_dir + '/melbourne.json')
     _save_events(regional, output_dir + '/regional.json')
+    _save_events(events, output_dir + '/all.json')
 
 
 def _prune_historical_events(events):
@@ -76,10 +80,10 @@ def _save_events(events, filename):
 
 @ch.attributes(['guid', 'link', 'category', 'title', 'description',
                 'region', 'venue', 'isfree', 'date', 'tags',
-                'accessibility'])
+                'accessibility', 'image'])
 class Event(object):
-    @staticmethod
-    def parse(node):
+    @classmethod
+    def parse(cls, node):
         return Event(
             guid=node.find('guid').text,
             link=node.find('link').text,
@@ -91,8 +95,18 @@ class Event(object):
             isfree=node.find('{myEvents}freeEntry').text,
             date=parse_date(node.find('{myEvents}eventDate').text),
             tags=[t.text for t in node.findall('{myEvents}tags')],
+            image=cls._get_first_image(node),
             accessibility=None,
         )
+
+    @staticmethod
+    def _get_first_image(node):
+        query = '{myEvents}multimedia/image/serverPath'
+        images = [l.text for l in node.findall(query)]
+        if images:
+            return images[0]
+
+        return DEFAULT_IMAGE
 
     def set_accessibility(self, v):
         self.accessibility = v
