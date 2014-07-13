@@ -14,21 +14,27 @@ TODAY = $(shell date +%Y-%m-%d)
 
 data: \
 	data/events-$(TODAY).xml \
-	data/accessibility.json \
+	data/venues.json \
 	static/data/melbourne.json \
 	data/osm/events.list \
 	data/osm/wheelchair.json \
 	data/missing-wheelmap.txt \
 
 data/events-$(TODAY).xml:
+	@echo 'Fetching event feed'
 	wget -O $@ http://www.eventsvictoria.com/distributionservice/rss.xml
 
-data/accessibility.json:
-	wget -O $@ 'http://data.melbourne.vic.gov.au/resource/pmhb-s6pn.json'
+data/accessibility.csv:
+	@echo 'Fetching building accessibility data'
+	wget -O $@ http://data.melbourne.vic.gov.au/api/views/pmhb-s6pn/rows.csv?accessType=DOWNLOAD
 
-static/data/melbourne.json: env data/events-$(TODAY).xml data/osm/wheelchair.json src/events.py
+data/venues.json: data/accessibility.csv data/osm/wheelchair.json src/venues.py
+	@echo 'Parsing accessibiliy data for venues'
+	env/bin/python src/venues.py $< data/osm/wheelchair.json $@
+
+static/data/melbourne.json: data/events-$(TODAY).xml data/osm/wheelchair.json src/events.py env
 	mkdir -p static/data
-	env/bin/python src/events.py data/events-$(TODAY).xml data/osm/wheelchair.json static/data
+	env/bin/python src/events.py $< data/venues.json static/data
 
 data/osm/events.list:
 	# This one is *slow*
