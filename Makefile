@@ -66,6 +66,9 @@ deploy: build .s3cfg
 	env/bin/s3cmd sync -c .s3cfg --acl-public --recursive --delete-removed --exclude='*/.*' output/ $(DEST_BUCKET)
 	env/bin/s3cmd put  -c .s3cfg --acl-public --add-header=x-amz-website-redirect-location:/melbourne output/index.html s3://eventable.in/index.html
 
+clean:
+	rm -f data/accessibility-*.csv data/wheelchair-*.json data/events-*.xml
+
 .PHONY: data build serve
 
 .DELETE_ON_ERROR:
