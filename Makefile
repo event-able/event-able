@@ -13,24 +13,20 @@ DEST_BUCKET = s3://eventable.in/
 TODAY = $(shell date +%Y-%m-%d)
 
 data: \
-	data/events-$(TODAY).xml \
-	data/venues.json \
 	static/data/all.json \
-	data/osm/events.list \
-	data/osm/wheelchair.json \
 	data/missing-wheelmap.txt \
 
 data/events-$(TODAY).xml:
 	@echo 'Fetching event feed'
 	wget -O $@ http://www.eventsvictoria.com/distributionservice/rss.xml
 
-data/accessibility.csv:
+data/accessibility-$(TODAY).csv:
 	@echo 'Fetching building accessibility data'
 	wget -O $@ http://data.melbourne.vic.gov.au/api/views/pmhb-s6pn/rows.csv?accessType=DOWNLOAD
 
-data/venues.json: data/accessibility.csv data/osm/wheelchair.json src/venues.py
+data/venues.json: data/accessibility-$(TODAY).csv data/wheelchair-$(TODAY).json src/venues.py
 	@echo 'Parsing accessibiliy data for venues'
-	env/bin/python src/venues.py $< data/osm/wheelchair.json $@
+	env/bin/python src/venues.py $< data/wheelchair-$(TODAY).json $@
 
 static/data/all.json: data/events-$(TODAY).xml data/venues.json src/events.py env
 	mkdir -p static/data
@@ -44,7 +40,7 @@ data/osm/events.list:
 data/osm/combined.list: data/osm/events.list data/osm/manual.list
 	cat data/osm/events.list data/osm/manual.list >$@
 
-data/osm/wheelchair.json: data/osm/combined.list src/wheelmap.py
+data/wheelchair-$(TODAY).json: data/osm/combined.list src/wheelmap.py
 	env/bin/python src/wheelmap.py data/osm/combined.list $@
 
 data/missing-wheelmap.txt: static/data/all.json src/missing_wheelmap.py
