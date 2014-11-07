@@ -61,7 +61,7 @@ def _api_request(node_id):
     node = resp.json()['node']
     wheelchair = node['wheelchair']
 
-    assert wheelchair in ('yes', 'unknown', 'limited')
+    assert wheelchair in ('yes', 'unknown', 'limited', 'no')
 
     return wheelchair
 
